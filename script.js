@@ -6,14 +6,12 @@ const tweetBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
 const loader = document.getElementById('loader');
 
-// Show loader
-function loading() {
+function showLoadingSpinner() {
   loader.hidden = false;
   quoteContainer.hidden = true;
 }
 
-// Hide loader
-function complete() {
+function removeLoadingSpinner() {
   loader.hidden = true;
   quoteContainer.hidden = false;
 }
@@ -35,20 +33,20 @@ function newQuote() {
 
 // Get Quotes From API
 async function getQuotes() {
-  loading();
+  showLoadingSpinner();
+  // We need to use a proxy URL to make our API call in order to avoid CORS issue
   const proxyUrl = 'https://powerful-lowlands-81258.herokuapp.com/';
   const apiUrl = 'https://type.fit/api/quotes';
   try {
     const response = await fetch(proxyUrl + apiUrl);
     apiQuotes = await response.json();
-    complete();
+    removeLoadingSpinner();
     newQuote();
   } catch (error) {
-    // Catch Error Here
+    console.log(error);
   }
 }
 
-// Tweet Quote
 function tweetQuote() {
   const twitterUrl = `https://twitter.com/intent/tweet?text=${quoteEl.textContent} - ${authorEl.textContent}`;
   window.open(twitterUrl, '_blank');
