@@ -1,9 +1,22 @@
-//let apiQuotes = [];
-let quoteContainer = document.getElementById('quote-container');
-let quoteEl = document.getElementById('quote');
-let authorEl = document.getElementById('author');
-let tweetBtn = document.getElementById('twitter');
-let newQuoteBtn = document.getElementById('new-quote');
+let apiQuotes = [];
+const quoteContainer = document.getElementById('quote-container');
+const quoteEl = document.getElementById('quote');
+const authorEl = document.getElementById('author');
+const tweetBtn = document.getElementById('twitter');
+const newQuoteBtn = document.getElementById('new-quote');
+const loader = document.getElementById('loader');
+
+// Show loader
+function loading() {
+  loader.hidden = false;
+  quoteContainer.hidden = true;
+}
+
+// Hide loader
+function complete() {
+  loader.hidden = true;
+  quoteContainer.hidden = false;
+}
 
 // Show New Quote
 function newQuote() {
@@ -22,11 +35,13 @@ function newQuote() {
 
 // Get Quotes From API
 async function getQuotes() {
+  loading();
   const proxyUrl = 'https://powerful-lowlands-81258.herokuapp.com/';
   const apiUrl = 'https://type.fit/api/quotes';
   try {
     const response = await fetch(proxyUrl + apiUrl);
     apiQuotes = await response.json();
+    complete();
     newQuote();
   } catch (error) {
     // Catch Error Here
